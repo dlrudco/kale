@@ -18,7 +18,30 @@ from kale.common import kfputils
 
 
 def _get_client(host=None):
-    return kfp.Client()
+    import requests
+
+    HOST = "http://143.248.152.217:33391"  # Central Dashboard 접근 주소 (포트 포함)
+    USERNAME = "user@example.com"
+    PASSWORD = "12341234"
+    NAMESPACE = "kubeflow" # 보통 kubeflow가 기본값입니다.
+
+    session = requests.Session()
+    response = session.get(HOST)
+
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+    }
+
+    data = {"login": USERNAME, "password": PASSWORD}
+    session.post(response.url, headers=headers, data=data)
+    session_cookie = session.cookies.get_dict()["authservice_session"]
+
+    client = kfp.Client(
+        host=f"{HOST}/pipeline",
+        cookies=f"authservice_session={session_cookie}",
+        namespace=NAMESPACE,
+    )
+    return client
 
 
 def list_experiments(request):
