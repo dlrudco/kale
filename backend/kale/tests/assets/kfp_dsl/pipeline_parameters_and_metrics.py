@@ -195,10 +195,10 @@ if __name__ == "__main__":
     import kfp
     import requests
 
-    HOST = "http://143.248.152.217:33391"  # Central Dashboard 접근 주소 (포트 포함)
+    HOST = "http://143.248.152.217:33391"  
     USERNAME = "user@example.com"
     PASSWORD = "12341234"
-    NAMESPACE = "kubeflow" # 보통 kubeflow가 기본값입니다.
+    NAMESPACE = "kubeflow"
 
     session = requests.Session()
     response = session.get(HOST)
